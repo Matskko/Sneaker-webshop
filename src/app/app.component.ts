@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from './services/cart.service';
+import { AuthService } from './services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +13,6 @@ import { CartService } from './services/cart.service';
 })
 export class AppComponent {
   title = 'angular-website';
-  constructor(public cartService: CartService) {}
+
+  constructor(public cartService: CartService, public authService: AuthService) {}
 }

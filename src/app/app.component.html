@@ -5,8 +5,10 @@
       <ul>
         <li><a routerLink="/">Home</a></li>
         <li><a routerLink="/products">Shoes</a></li>
+        <li><a routerLink="/cart">Cart ({{ cartService.cartCount() }})</a></li>
         <li>
-          <a routerLink="/cart">Cart ({{cartService.cartCount()}})</a>
+          <button *ngIf="!authService.isLoggedIn()" (click)="authService.login('admin', 'admin')">Login</button>
+          <button *ngIf="authService.isLoggedIn()" (click)="authService.logout()">Logout</button>
         </li>
       </ul>
     </nav>
