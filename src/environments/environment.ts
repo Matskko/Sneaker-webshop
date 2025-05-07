@@ -1,13 +1,14 @@
 export const environment = {
     production: false,
     firebaseConfig: {
-      apiKey: "AIzaSyCH8BpJn7BoPzW3uGXHiPNvzm6YJZGaY0A",
-      authDomain: "sneaker-shop-8a085.firebaseapp.com",
-      projectId: "sneaker-shop-8a085",
-      storageBucket: "sneaker-shop-8a085.appspot.com", // Corrected
-      messagingSenderId: "221817761955",
-      appId: "1:221817761955:web:54b95d919eb6d88da78f16",
-      measurementId: "G-88JJ4GCP2W"
-    }
-  };
+      apiKey: "your-api-key",
+      authDomain: "your-auth-domain",
+      projectId: "your-project-id",
+      storageBucket: "your-storage-bucket",
+      messagingSenderId: "your-messaging-sender-id",
+      appId: "your-app-id"
+    },
+    supabaseUrl: 'https://aljxtikumsaumeilpigh.supabase.co',
+    supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsanh0aWt1bXNhdW1laWxwaWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2MDMxNjIsImV4cCI6MjA2MjE3OTE2Mn0.gEdpAifNQvfl0NO5Qvp_BE2gy-bM-Uia-UC3lf-mwM0'
+};
   
