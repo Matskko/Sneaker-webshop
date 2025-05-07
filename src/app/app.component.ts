@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from './services/cart.service';
 import { AuthService } from './services/auth.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
 
   constructor(
     public cartService: CartService,
-    public authService: AuthService
+    public authService: AuthService,
+    public notificationService: NotificationService
   ) {}
 
   async logout(event: Event) {
