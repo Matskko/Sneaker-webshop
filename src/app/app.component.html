@@ -19,6 +19,10 @@
   </div>
 </header>
 
+<div class="notification" *ngIf="(notificationService.message$ | async) as message">
+  {{ message }}
+</div>
+
 <main>
   <router-outlet></router-outlet>
 </main>
@@ -28,3 +32,29 @@
     <p>&copy; 2024 Sneaker Shop. All rights reserved.</p>
   </div>
 </footer>
+
+<style>
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4CAF50;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+</style>

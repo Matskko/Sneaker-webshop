@@ -1,97 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CartService, Product } from '../../services/cart.service';
 import { SupabaseService } from '../../services/supabase.service';
+import { FavoritesService } from '../../services/favorites.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  template: '<div class="container">' +
-    '<h2 class="section-title">Our Collection</h2>' +
-    '<div *ngIf="loading" class="loading-spinner">Loading...</div>' +
-    '<div *ngIf="error" class="error-message">{{ error }}</div>' +
-    '<div class="product-grid">' +
-      '<div class="product-card" *ngFor="let product of products">' +
-        '<img [src]="product.image" [alt]="product.name">' +
-        '<h3>{{product.name}}</h3>' +
-        '<p class="price">${{product.price}}</p>' +
-        '<button class="btn-primary" (click)="addToCart(product)">Add to Cart</button>' +
-      '</div>' +
-    '</div>' +
-  '</div>',
-  styles: [`
-    .section-title {
-      text-align: center;
-      margin: 3rem 0;
-      font-size: 2.5rem;
-      color: #1a202c;
-      font-weight: 700;
-    }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 2rem;
-      padding: 2rem;
-    }
-    .product-card {
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-    .product-card h3 {
-      margin: 1rem 0;
-      font-size: 1.2rem;
-    }
-    .price {
-      font-weight: bold;
-      color: #2d3748;
-      font-size: 1.1rem;
-    }
-    .btn-primary {
-      width: 100%;
-      padding: 0.8rem;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-primary:hover {
-      background: #45a049;
-    }
-  `]
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  products: Product[] = [];
+  allProducts: Product[] = [];
+  filteredProducts: Product[] = [];
   loading = false;
   error: string | null = null;
+  
+  searchQuery = '';
+  selectedPriceRange = 'all';
+  selectedBrand = 'all';
+  brands: string[] = [];
 
   constructor(
     private cartService: CartService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private favoritesService: FavoritesService,
+    private authService: AuthService
   ) {}
 
   async ngOnInit() {
     try {
       this.loading = true;
-      this.products = await this.supabaseService.getProducts();
-      console.log('Loaded products:', this.products); // Debug log
+      this.allProducts = await this.supabaseService.getProducts();
+      this.filteredProducts = [...this.allProducts];
       
-      if (!this.products || this.products.length === 0) {
+      // Extract unique brands
+      this.brands = [...new Set(this.allProducts.map(p => this.getBrand(p.name)))];
+      
+      if (!this.allProducts || this.allProducts.length === 0) {
         this.error = 'No products found';
       }
     } catch (error: any) {
@@ -102,7 +52,59 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  filterProducts() {
+    let filtered = [...this.allProducts];
+
+    // Apply search filter
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply brand filter
+    if (this.selectedBrand !== 'all') {
+      filtered = filtered.filter(p => 
+        this.getBrand(p.name) === this.selectedBrand
+      );
+    }
+
+    // Apply price filter
+    if (this.selectedPriceRange !== 'all') {
+      const [min, max] = this.getPriceRange();
+      filtered = filtered.filter(p => 
+        p.price >= min && (max ? p.price <= max : true)
+      );
+    }
+
+    this.filteredProducts = filtered;
+  }
+
+  private getBrand(name: string): string {
+    return name.split(' ')[0]; // Assumes brand is first word
+  }
+
+  private getPriceRange(): [number, number | null] {
+    switch (this.selectedPriceRange) {
+      case '0-100': return [0, 100];
+      case '100-150': return [100, 150];
+      case '150-200': return [150, 200];
+      case '200+': return [200, null];
+      default: return [0, null];
+    }
+  }
+
   addToCart(product: Product) {
     this.cartService.addToCart(product);
+  }
+
+  async toggleFavorite(product: Product) {
+    await this.favoritesService.toggleFavorite(product);
+  }
+
+  isFavorite(productId: number): boolean {
+    const favorites = this.favoritesService.favorites$.getValue();
+    return favorites.some(p => p.id === productId);
   }
 } 

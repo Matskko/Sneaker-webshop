@@ -39,7 +39,8 @@ import { RouterModule } from '@angular/router';
     '</section>' +
     '<section class="featured-products">' +
       '<h2>Featured Collection</h2>' +
-      '<div class="product-grid">' +
+      '<div class="scroll-indicator">Scroll to see more →</div>' +
+      '<div class="product-scroll">' +
         '<div class="product-card" *ngFor="let product of featuredProducts">' +
           '<img [src]="product.image" [alt]="product.name">' +
           '<h3>{{product.name}}</h3>' +
@@ -109,20 +110,42 @@ import { RouterModule } from '@angular/router';
     }
     .featured-products {
       padding: 4rem 0;
+      position: relative;
     }
     .featured-products h2 {
       text-align: center;
       margin-bottom: 2rem;
     }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
+    .scroll-indicator {
+      text-align: right;
+      padding-right: 2rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .product-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding: 1rem 2rem;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #4CAF50 #f1f1f1;
+    }
+    .product-scroll::-webkit-scrollbar {
+      height: 8px;
+    }
+    .product-scroll::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .product-scroll::-webkit-scrollbar-thumb {
+      background: #4CAF50;
+      border-radius: 10px;
     }
     .product-card {
+      flex: 0 0 280px;
       background: white;
       border-radius: 8px;
       padding: 1rem;
@@ -135,12 +158,16 @@ import { RouterModule } from '@angular/router';
     .product-card img {
       width: 100%;
       height: 200px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 4px;
+      background: #f8f9fa;
     }
     .product-card h3 {
       margin: 1rem 0;
       font-size: 1.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .price {
       font-weight: bold;
@@ -149,6 +176,7 @@ import { RouterModule } from '@angular/router';
     }
     .btn-primary {
       display: inline-block;
+      width: 100%;
       padding: 0.8rem 1.5rem;
       background: #4CAF50;
       color: white;
@@ -157,9 +185,23 @@ import { RouterModule } from '@angular/router';
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s;
+      text-align: center;
     }
     .btn-primary:hover {
       background: #45a049;
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        gap: 3rem;
+      }
+      .hero-text h1 {
+        font-size: 2.5rem;
+      }
+      .product-card {
+        flex: 0 0 240px;
+      }
     }
   `]
 })
@@ -180,13 +222,18 @@ export class HomeComponent implements OnInit {
       // Find Nike Air Jordan 1 for hero section
       this.featuredProduct = products.find(p => p.name === 'Nike Air Jordan 1') || products[0];
       
-      // Get featured products excluding the hero product
-      this.featuredProducts = products
-        .filter(p => p.id !== this.featuredProduct?.id)
-        .slice(0, 6);
+      // Get 8 random products for the scrollable row (excluding the hero product)
+      const availableProducts = products.filter(p => p.id !== this.featuredProduct?.id);
+      this.featuredProducts = this.getRandomProducts(availableProducts, 8);
     } catch (error) {
       console.error('Error loading products:', error);
     }
+  }
+
+  // Helper method to get random products
+  private getRandomProducts(products: Product[], count: number): Product[] {
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   }
 
   addToCart(product: Product) {

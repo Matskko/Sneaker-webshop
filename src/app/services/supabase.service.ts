@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  public supabase: SupabaseClient;
 
   constructor() {
     this.supabase = createClient(
@@ -119,6 +119,23 @@ export class SupabaseService {
     } catch (error) {
       console.error('Error updating profile:', error);
       throw error;
+    }
+  }
+
+  async getProductsByIds(ids: number[]) {
+    try {
+      if (!ids.length) return [];
+      
+      const { data, error } = await this.supabase
+        .from('products')
+        .select('*')
+        .in('id', ids);
+      
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching products by ids:', error);
+      return [];
     }
   }
 } 

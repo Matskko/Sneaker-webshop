@@ -1,12 +1,48 @@
 <div class="container">
+  <div class="filters-section">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        (ngModelChange)="filterProducts()"
+        placeholder="Search sneakers..."
+        class="search-input"
+      >
+    </div>
+    
+    <div class="filter-options">
+      <div class="price-filter">
+        <label>Price Range:</label>
+        <select [(ngModel)]="selectedPriceRange" (change)="filterProducts()">
+          <option value="all">All Prices</option>
+          <option value="0-100">$0 - $100</option>
+          <option value="100-150">$100 - $150</option>
+          <option value="150-200">$150 - $200</option>
+          <option value="200+">$200+</option>
+        </select>
+      </div>
+      
+      <div class="brand-filter">
+        <label>Brand:</label>
+        <select [(ngModel)]="selectedBrand" (change)="filterProducts()">
+          <option value="all">All Brands</option>
+          <option *ngFor="let brand of brands">{{brand}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <h2 class="section-title">Our Collection</h2>
   
   <!-- Debug information -->
-  <div *ngIf="loading">Loading products...</div>
-  <div *ngIf="error" style="color: red;">Error: {{error}}</div>
+  <div *ngIf="loading" class="loading-spinner">Loading...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
   
   <div class="product-grid">
-    <div class="product-card" *ngFor="let product of products">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <div class="favorite-icon" (click)="toggleFavorite(product)">
+        <i [class]="isFavorite(product.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
+      </div>
       <img [src]="product.image" [alt]="product.name">
       <h3>{{product.name}}</h3>
       <p class="price">${{product.price}}</p>
