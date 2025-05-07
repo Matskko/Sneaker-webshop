@@ -4,8 +4,8 @@ import { computed } from '@angular/core';
 export interface Product {
   id: number;
   name: string;
-  price: number;
   image: string;
+  price: number;
   quantity?: number;
 }
 

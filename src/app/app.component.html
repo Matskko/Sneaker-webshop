@@ -5,9 +5,15 @@
       <ul>
         <li><a routerLink="/">Home</a></li>
         <li><a routerLink="/products">Shoes</a></li>
-        <li>
-          <a routerLink="/cart">Cart ({{cartService.cartCount()}})</a>
-        </li>
+        <li><a routerLink="/cart">Cart ({{cartService.cartCount()}})</a></li>
+        <ng-container *ngIf="(authService.user$ | async) as user; else loginLinks">
+          <li><a routerLink="/account">Account</a></li>
+          <li><a (click)="logout($event)">Logout ({{user.email}})</a></li>
+        </ng-container>
+        <ng-template #loginLinks>
+          <li><a routerLink="/login">Login</a></li>
+          <li><a routerLink="/register">Register</a></li>
+        </ng-template>
       </ul>
     </nav>
   </div>

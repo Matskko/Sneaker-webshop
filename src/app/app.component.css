@@ -67,3 +67,7 @@
   background-color: #007bff;
   color: white;
 }
+
+nav a {
+  cursor: pointer;
+}
