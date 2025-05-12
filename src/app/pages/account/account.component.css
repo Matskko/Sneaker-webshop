@@ -113,4 +113,157 @@ label {
 }
 .btn-remove:hover {
   background: #d32f2f;
+}
+
+/* Reviews Management */
+.reviews-management {
+  margin-top: 3rem;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.review-form {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.rating-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stars {
+  display: flex;
+}
+
+.stars i {
+  color: #ddd;
+  font-size: 1.5rem;
+  margin-right: 0.3rem;
+  cursor: pointer;
+}
+
+.stars i.fas {
+  color: #ffc107;
+}
+
+.user-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.review-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.product-info a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+}
+
+.product-info img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-feature {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-feature:hover {
+  background: #45a049;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.review-rating i {
+  color: #ffc107;
+  margin-right: 0.2rem;
+}
+
+.review-rating i.far {
+  color: #ddd;
+}
+
+.review-date {
+  margin-left: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.review-content p {
+  line-height: 1.6;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  margin-top: 1.5rem;
 } 

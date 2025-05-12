@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CartService, Product } from '../../services/cart.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { RouterModule } from '@angular/router';
+import { ReviewService, Review } from '../../services/review.service';
 
 @Component({
   selector: 'app-home',
@@ -208,10 +209,12 @@ import { RouterModule } from '@angular/router';
 export class HomeComponent implements OnInit {
   featuredProduct: Product | null = null;
   featuredProducts: Product[] = [];
+  featuredReviews: Review[] = [];
 
   constructor(
     private cartService: CartService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private reviewService: ReviewService
   ) {}
 
   async ngOnInit() {
@@ -225,8 +228,11 @@ export class HomeComponent implements OnInit {
       // Get 8 random products for the scrollable row (excluding the hero product)
       const availableProducts = products.filter(p => p.id !== this.featuredProduct?.id);
       this.featuredProducts = this.getRandomProducts(availableProducts, 8);
+      
+      // Get featured reviews
+      this.featuredReviews = await this.reviewService.getFeaturedReviews();
     } catch (error) {
-      console.error('Error loading products:', error);
+      console.error('Error loading data:', error);
     }
   }
 
@@ -238,5 +244,10 @@ export class HomeComponent implements OnInit {
 
   addToCart(product: Product) {
     this.cartService.addToCart(product);
+  }
+  
+  // Helper method to generate an array for star ratings
+  getStars(rating: number): number[] {
+    return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
   }
 } 
