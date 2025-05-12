@@ -113,4 +113,32 @@ label {
 }
 .btn-remove:hover {
   background: #d32f2f;
+}
+
+/* Reviews Management */
+.reviews-management {
+  /* Delete this section */
+}
+
+.review-form {
+  /* Delete this section */
+}
+
+/* Delete all other review-related styles */
+
+/* Admin Section */
+.admin-section {
+  /* Delete this section */
+}
+
+.admin-section h3 {
+  /* Delete this section */
+}
+
+.admin-actions {
+  /* Delete this section */
+}
+
+.admin-badge {
+  /* Delete this section */
 } 

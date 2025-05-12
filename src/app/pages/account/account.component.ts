@@ -5,11 +5,12 @@ import { AuthService } from '../../services/auth.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { CartService, Product } from '../../services/cart.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
