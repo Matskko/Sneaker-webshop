@@ -1,31 +1,44 @@
-<!-- Add this section after your featured products section -->
-<section class="reviews-section" *ngIf="featuredReviews.length > 0">
-  <div class="container">
-    <h2>What Our Customers Say</h2>
-    
-    <div class="reviews-carousel">
-      <div class="review-card" *ngFor="let review of featuredReviews">
-        <div class="review-header">
-          <div class="review-rating">
-            <i *ngFor="let star of getStars(review.rating)" 
-               [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
-          </div>
-          <div class="reviewer-info">
-            <span class="reviewer-name">{{ review.user_name }}</span>
-          </div>
-        </div>
-        
-        <div class="review-content">
-          <p>"{{ review.comment }}"</p>
-        </div>
-        
-        <div class="review-product" *ngIf="review.product_name">
-          <a [routerLink]="['/product', review.product_id]">
-            <img [src]="review.product_image" [alt]="review.product_name">
-            <span>{{ review.product_name }}</span>
-          </a>
-        </div>
+<main class="container">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Premium Sneaker Collection</h1>
+        <p>Discover the latest and most iconic sneakers from top brands</p>
+        <a routerLink="/products" class="btn-primary">Shop Now</a>
+      </div>
+      <div class="hero-image" *ngIf="featuredProduct">
+        <img [src]="featuredProduct.image" [alt]="featuredProduct.name">
       </div>
     </div>
-  </div>
-</section> 
+  </section>
+  
+  <section class="info-section">
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Free Shipping</h3>
+        <p>On orders over $100</p>
+      </div>
+      <div class="info-card">
+        <h3>Secure Payment</h3>
+        <p>Safe & secure checkout</p>
+      </div>
+      <div class="info-card">
+        <h3>Easy Returns</h3>
+        <p>30 day return policy</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="featured-products">
+    <h2>Featured Collection</h2>
+    <div class="scroll-indicator">Scroll to see more →</div>
+    <div class="product-scroll">
+      <div class="product-card" *ngFor="let product of featuredProducts">
+        <img [src]="product.image" [alt]="product.name">
+        <h3>{{product.name}}</h3>
+        <p class="price">${{product.price}}</p>
+        <button class="btn-primary" (click)="addToCart(product)">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+</main> 

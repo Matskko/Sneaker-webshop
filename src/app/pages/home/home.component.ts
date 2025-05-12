@@ -3,218 +3,195 @@ import { CommonModule } from '@angular/common';
 import { CartService, Product } from '../../services/cart.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { RouterModule } from '@angular/router';
-import { ReviewService, Review } from '../../services/review.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: '<main class="container">' +
-    '<section class="hero">' +
-      '<div class="hero-content">' +
-        '<div class="hero-text">' +
-          '<h1>Premium Sneaker Collection</h1>' +
-          '<p>Discover the latest and most iconic sneakers from top brands</p>' +
-          '<a routerLink="/products" class="btn-primary">Shop Now</a>' +
-        '</div>' +
-        '<div class="hero-image" *ngIf="featuredProduct">' +
-          '<img [src]="featuredProduct.image" [alt]="featuredProduct.name">' +
-        '</div>' +
-      '</div>' +
-    '</section>' +
-    '<section class="info-section">' +
-      '<div class="info-grid">' +
-        '<div class="info-card">' +
-          '<h3>Free Shipping</h3>' +
-          '<p>On orders over $100</p>' +
-        '</div>' +
-        '<div class="info-card">' +
-          '<h3>Secure Payment</h3>' +
-          '<p>Safe & secure checkout</p>' +
-        '</div>' +
-        '<div class="info-card">' +
-          '<h3>Easy Returns</h3>' +
-          '<p>30 day return policy</p>' +
-        '</div>' +
-      '</div>' +
-    '</section>' +
-    '<section class="featured-products">' +
-      '<h2>Featured Collection</h2>' +
-      '<div class="scroll-indicator">Scroll to see more →</div>' +
-      '<div class="product-scroll">' +
-        '<div class="product-card" *ngFor="let product of featuredProducts">' +
-          '<img [src]="product.image" [alt]="product.name">' +
-          '<h3>{{product.name}}</h3>' +
-          '<p class="price">${{product.price}}</p>' +
-          '<button class="btn-primary" (click)="addToCart(product)">Add to Cart</button>' +
-        '</div>' +
-      '</div>' +
-    '</section>' +
-  '</main>',
-  styles: [`
-    .hero {
-      background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
-      padding: 6rem 2rem;
-      margin: 2rem auto;
-      border-radius: 20px;
-      max-width: 1400px;
-    }
-    .hero-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 6rem;
-    }
-    .hero-text h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      background: linear-gradient(to right, #2d3748, #4a5568);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1.5rem;
-      line-height: 1.2;
-    }
-    .hero-text p {
-      font-size: 1.25rem;
-      color: #64748b;
-      margin-bottom: 2.5rem;
-      line-height: 1.6;
-    }
-    .hero-image img {
-      max-width: 100%;
-      height: auto;
-      transform: rotate(-12deg) scale(1.1);
-      filter: drop-shadow(0 25px 25px rgba(0,0,0,0.15));
-      transition: transform 0.3s ease;
-    }
-    .hero-image img:hover {
-      transform: rotate(-12deg) scale(1.15);
-    }
-    .info-section {
-      padding: 4rem 0;
-      background: white;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-    .info-card {
-      text-align: center;
-      padding: 2rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-    .featured-products {
-      padding: 4rem 0;
-      position: relative;
-    }
-    .featured-products h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .scroll-indicator {
-      text-align: right;
-      padding-right: 2rem;
-      color: #64748b;
-      margin-bottom: 1rem;
-      font-style: italic;
-    }
-    .product-scroll {
-      display: flex;
-      overflow-x: auto;
-      gap: 1.5rem;
-      padding: 1rem 2rem;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: #4CAF50 #f1f1f1;
-    }
-    .product-scroll::-webkit-scrollbar {
-      height: 8px;
-    }
-    .product-scroll::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    .product-scroll::-webkit-scrollbar-thumb {
-      background: #4CAF50;
-      border-radius: 10px;
-    }
-    .product-card {
-      flex: 0 0 280px;
-      background: white;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: contain;
-      border-radius: 4px;
-      background: #f8f9fa;
-    }
-    .product-card h3 {
-      margin: 1rem 0;
-      font-size: 1.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .price {
-      font-weight: bold;
-      color: #2d3748;
-      font-size: 1.1rem;
-    }
-    .btn-primary {
-      display: inline-block;
-      width: 100%;
-      padding: 0.8rem 1.5rem;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
-      text-align: center;
-    }
-    .btn-primary:hover {
-      background: #45a049;
-    }
+  template: `
+    <div class="announcement-bar">
+      <div class="container">
+        <p>Free shipping on all orders over $100 | Use code WELCOME10 for 10% off your first order</p>
+      </div>
+    </div>
     
-    @media (max-width: 768px) {
-      .hero-content {
-        flex-direction: column;
-        gap: 3rem;
-      }
-      .hero-text h1 {
-        font-size: 2.5rem;
-      }
-      .product-card {
-        flex: 0 0 240px;
-      }
-    }
-  `]
+    <main class="container">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-text">
+            <span class="hero-badge">New Collection</span>
+            <h1>Step Into <span class="highlight">Style</span></h1>
+            <p>Discover premium sneakers from top brands. Limited editions, classic styles, and the latest drops all in one place.</p>
+            <div class="hero-buttons">
+              <a routerLink="/products" class="btn-primary">Shop Collection</a>
+              <a routerLink="/products" class="btn-secondary">Explore New Arrivals</a>
+            </div>
+          </div>
+          <div class="hero-image" *ngIf="featuredProduct">
+            <div class="hero-image-container">
+              <img [src]="featuredProduct.image" [alt]="featuredProduct.name" (click)="showProductDetails(featuredProduct)">
+              <div class="hero-product-badge">
+                <span class="product-name">{{featuredProduct.name}}</span>
+                <span class="product-price">\${{featuredProduct.price}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Brands Section -->
+      <section class="brands-section">
+        <h2 class="section-title">Shop by Brand</h2>
+        <div class="brands-grid">
+          <div class="brand-card">
+            <div class="brand-logo">
+              <span>N</span>
+            </div>
+            <h3>Nike</h3>
+          </div>
+          <div class="brand-card">
+            <div class="brand-logo">
+              <span>A</span>
+            </div>
+            <h3>Adidas</h3>
+          </div>
+          <div class="brand-card">
+            <div class="brand-logo">
+              <span>NB</span>
+            </div>
+            <h3>New Balance</h3>
+          </div>
+          <div class="brand-card">
+            <div class="brand-logo">
+              <span>P</span>
+            </div>
+            <h3>Puma</h3>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Benefits Section -->
+      <section class="benefits-section">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <span>🚚</span>
+            </div>
+            <h3>Free Shipping</h3>
+            <p>On orders over $100</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">
+              <span>🔒</span>
+            </div>
+            <h3>Secure Payment</h3>
+            <p>Safe & secure checkout</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">
+              <span>↩️</span>
+            </div>
+            <h3>Easy Returns</h3>
+            <p>30 day return policy</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Featured Products -->
+      <section class="featured-products">
+        <div class="section-header">
+          <h2 class="section-title">Featured Collection</h2>
+          <a routerLink="/products" class="view-all">View All</a>
+        </div>
+        <div class="scroll-indicator">Scroll to see more →</div>
+        <div class="product-scroll">
+          <div class="product-card" *ngFor="let product of featuredProducts">
+            <div class="product-image" (click)="showProductDetails(product)">
+              <img [src]="product.image" [alt]="product.name">
+            </div>
+            <div class="product-info">
+              <h3>{{product.name}}</h3>
+              <p class="price">\${{product.price}}</p>
+              <div class="product-actions">
+                <button class="btn-primary" (click)="addToCart(product)">
+                  🛒 Add to Cart
+                </button>
+                <button class="btn-secondary" (click)="showProductDetails(product)">
+                  Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Newsletter Section -->
+      <section class="newsletter-section">
+        <div class="newsletter-content">
+          <h2>Join Our Newsletter</h2>
+          <p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email address" class="newsletter-input">
+            <button class="btn-primary">Subscribe</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Product Details Dialog -->
+    <div class="dialog-overlay" *ngIf="selectedProduct" (click)="closeDialog()">
+      <div class="dialog-content" (click)="$event.stopPropagation()">
+        <button class="dialog-close" (click)="closeDialog()">×</button>
+        <div class="dialog-grid">
+          <div class="dialog-image">
+            <img [src]="selectedProduct.image" [alt]="selectedProduct.name">
+          </div>
+          <div class="dialog-info">
+            <h2>{{selectedProduct.name}}</h2>
+            <p class="dialog-price">\${{selectedProduct.price}}</p>
+            <div class="dialog-description">
+              <p>Experience ultimate comfort and style with the {{selectedProduct.name}}. These premium sneakers feature advanced cushioning technology, breathable materials, and a sleek design that complements any outfit.</p>
+              <p>Perfect for everyday wear or athletic activities, these shoes provide excellent support and durability.</p>
+            </div>
+            <div class="dialog-details">
+              <div class="detail-item">
+                <span class="detail-label">Brand:</span>
+                <span class="detail-value">{{selectedProduct.name.split(' ')[0]}}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Color:</span>
+                <span class="detail-value">Multiple Options</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Material:</span>
+                <span class="detail-value">Premium Leather & Mesh</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Availability:</span>
+                <span class="detail-value">In Stock</span>
+              </div>
+            </div>
+            <div class="dialog-actions">
+              <button class="btn-primary btn-full-width" (click)="addToCart(selectedProduct); closeDialog()">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   featuredProduct: Product | null = null;
   featuredProducts: Product[] = [];
-  featuredReviews: Review[] = [];
+  selectedProduct: Product | null = null;
 
   constructor(
     private cartService: CartService,
-    private supabaseService: SupabaseService,
-    private reviewService: ReviewService
+    private supabaseService: SupabaseService
   ) {}
 
   async ngOnInit() {
@@ -228,9 +205,6 @@ export class HomeComponent implements OnInit {
       // Get 8 random products for the scrollable row (excluding the hero product)
       const availableProducts = products.filter(p => p.id !== this.featuredProduct?.id);
       this.featuredProducts = this.getRandomProducts(availableProducts, 8);
-      
-      // Get featured reviews
-      this.featuredReviews = await this.reviewService.getFeaturedReviews();
     } catch (error) {
       console.error('Error loading data:', error);
     }
@@ -245,9 +219,14 @@ export class HomeComponent implements OnInit {
   addToCart(product: Product) {
     this.cartService.addToCart(product);
   }
-  
-  // Helper method to generate an array for star ratings
-  getStars(rating: number): number[] {
-    return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
+
+  showProductDetails(product: Product) {
+    this.selectedProduct = product;
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when dialog is open
+  }
+
+  closeDialog() {
+    this.selectedProduct = null;
+    document.body.style.overflow = ''; // Restore scrolling
   }
 } 

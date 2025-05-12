@@ -26,6 +26,7 @@ export class ReviewService {
 
   async getFeaturedReviews(): Promise<Review[]> {
     try {
+      console.log('Fetching featured reviews...');
       const { data, error } = await this.supabaseService.supabase
         .from('reviews')
         .select(`
@@ -36,6 +37,9 @@ export class ReviewService {
         .eq('featured', true)
         .order('created_at', { ascending: false })
         .limit(5);
+
+      console.log('Featured reviews data:', data);
+      console.log('Featured reviews error:', error);
 
       if (error) throw error;
       
