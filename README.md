@@ -25,3 +25,24 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Environment Setup
+
+This project uses environment files to store sensitive information like API keys. Follow these steps to set up your environment:
+
+1. Copy the example environment files:
+   ```
+   cp src/environments/environment.example.ts src/environments/environment.ts
+   cp src/environments/environment.prod.example.ts src/environments/environment.prod.ts
+   ```
+
+2. Edit the environment files and add your actual API keys:
+   ```typescript
+   // In src/environments/environment.ts
+   export const environment = {
+     production: false,
+     googleMapsApiKey: 'YOUR_ACTUAL_API_KEY'
+   };
+   ```
+
+3. Never commit your actual environment files to Git.

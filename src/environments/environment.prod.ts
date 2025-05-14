@@ -1,5 +1,6 @@
 export const environment = {
-    production: false,
+    production: true,
+    googleMapsApiKey: '',  // Empty in source control
     firebaseConfig: {
       apiKey: "AIzaSyCH8BpJn7BoPzW3uGXHiPNvzm6YJZGaY0A",
       authDomain: "sneaker-shop-8a085.firebaseapp.com",
