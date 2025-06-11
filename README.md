@@ -80,9 +80,6 @@ Before you begin, ensure you have the following installed:
 2. Login: `netlify login`
 3. Deploy: `netlify deploy --prod`
 
-## 📱 Screenshots
-
-[Add screenshots of your application here]
 
 ## 🤝 Contributing
 
@@ -98,9 +95,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+**Info**
+- Email: Tobiasvdvaart@gmail.com
 
 ## 🙏 Acknowledgments
 
